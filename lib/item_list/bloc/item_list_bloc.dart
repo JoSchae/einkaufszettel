@@ -15,14 +15,15 @@ class ItemListBloc {
     itemListController.sink.add(provider.currentList);
   }
 
+  resolveItemAsBought(UniqueKey id) {
+    provider.removeFromCurrentList(id);
+    itemListController.sink.add(provider.currentList);
+  }
+
   addItemToList(CustomListItemObject item) {
     provider.addToCurrentList(item);
     itemListController.sink.add(provider.currentList);
   }
-
-  // void updateList(CustomListItemObject item) {
-  //   itemListController.sink.add(item);
-  // }
 
   void dispose() {
     itemListController.close();

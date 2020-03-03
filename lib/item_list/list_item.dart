@@ -1,13 +1,11 @@
 import 'package:einkaufszettel/_models/CustomListItemObject.dart';
+import 'package:einkaufszettel/item_list/bloc/item_list_bloc.dart';
 import 'package:flutter/material.dart';
 
 class CustomListItem extends StatelessWidget {
-    final CustomListItemObject itemObject;
-    final ValueChanged<UniqueKey> removeItemAction;
-    final ValueChanged<UniqueKey> resolveItemAction;
+  final CustomListItemObject itemObject;
 
-
-  const CustomListItem({Key key, this.itemObject, this.removeItemAction, this.resolveItemAction}) : super(key: key);
+  const CustomListItem({Key key, this.itemObject}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Card(
@@ -16,9 +14,11 @@ class CustomListItem extends StatelessWidget {
           leading: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              IconButton(icon: Icon(Icons.clear), onPressed: () {
-                this.removeItemAction(itemObject.id);
-              }),
+              IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    itemListBloc.removeItemFromList(this.itemObject.id);
+                  }),
               Container(
                 width: 60.0,
                 height: 60.0,
@@ -38,9 +38,11 @@ class CustomListItem extends StatelessWidget {
               Text(itemObject.name),
             ],
           ),
-          subtitle: Text(itemObject.company),
-          trailing: IconButton(icon: Icon(Icons.done), onPressed: () {
-                this.resolveItemAction(itemObject.id);
+          subtitle: this.itemObject.company == null ? Container() : Text(itemObject.company),
+          trailing: IconButton(
+              icon: Icon(Icons.done),
+              onPressed: () {
+                itemListBloc.resolveItemAsBought(this.itemObject.id);
               }),
         ),
       );

@@ -1,4 +1,5 @@
 import 'package:einkaufszettel/_models/CustomListItemObject.dart';
+import 'package:einkaufszettel/item_list/bloc/item_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -55,9 +56,9 @@ import 'package:flutter/services.dart';
 // }
 
 class AddItemDialog extends StatefulWidget {
-  final ValueChanged<CustomListItemObject> parentAction;
+  // final ValueChanged<CustomListItemObject> parentAction;
 
-  const AddItemDialog({Key key, this.parentAction}) : super(key: key);
+  // const AddItemDialog({Key key, this.parentAction}) : super(key: key);
 
   @override
   _AddItemDialogState createState() => _AddItemDialogState();
@@ -151,7 +152,8 @@ class _AddItemDialogState extends State<AddItemDialog> {
                             amount: _amount,
                             company: _company,
                             created: DateTime.now());
-                        widget.parentAction(newItem);
+                        // widget.parentAction(newItem);
+                        itemListBloc.addItemToList(newItem);
                         Navigator.pop(context, newItem);
                       }
                     },
