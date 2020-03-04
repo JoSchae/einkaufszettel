@@ -17,7 +17,7 @@ class CustomListItem extends StatelessWidget {
               IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () {
-                    itemListBloc.removeItemFromList(this.itemObject.id);
+                    // itemListBloc.removeItemFromList(this.itemObject.id);
                   }),
               Container(
                 width: 60.0,
@@ -42,7 +42,7 @@ class CustomListItem extends StatelessWidget {
           trailing: IconButton(
               icon: Icon(Icons.done),
               onPressed: () {
-                itemListBloc.resolveItemAsBought(this.itemObject.id);
+                // itemListBloc.resolveItemAsBought(this.itemObject.id);
               }),
         ),
       );

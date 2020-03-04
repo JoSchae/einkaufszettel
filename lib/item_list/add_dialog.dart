@@ -1,7 +1,11 @@
 import 'package:einkaufszettel/_models/CustomListItemObject.dart';
 import 'package:einkaufszettel/item_list/bloc/item_list_bloc.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:einkaufszettel/_models/CRUDModel.dart';
 
 // class AddItemDialog extends StatelessWidget {
 //   @override
@@ -56,9 +60,11 @@ import 'package:flutter/services.dart';
 // }
 
 class AddItemDialog extends StatefulWidget {
-  // final ValueChanged<CustomListItemObject> parentAction;
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
 
-  // const AddItemDialog({Key key, this.parentAction}) : super(key: key);
+  const AddItemDialog({Key key, this.analytics, this.observer})
+      : super(key: key);
 
   @override
   _AddItemDialogState createState() => _AddItemDialogState();
@@ -72,6 +78,8 @@ class _AddItemDialogState extends State<AddItemDialog> {
 
   @override
   Widget build(BuildContext context) {
+    var itemsProvider = Provider.of<CRUDModel>(context);
+
     return Form(
       key: _formKey,
       child: Dialog(
@@ -93,7 +101,8 @@ class _AddItemDialogState extends State<AddItemDialog> {
                           width: 60.0,
                           // height: 50.0,
                           child: RaisedButton(
-                              onPressed: () => Navigator.pop(context), child: Icon(Icons.close))),
+                              onPressed: () => Navigator.pop(context),
+                              child: Icon(Icons.close))),
                       // FlatButton(onPressed: null, child: Icon(Icons.close))
                     ],
                   ),
@@ -147,13 +156,15 @@ class _AddItemDialogState extends State<AddItemDialog> {
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
                         var newItem = new CustomListItemObject(
-                            id: UniqueKey(),
+                            id: UniqueKey().toString(),
                             name: _productName,
                             amount: _amount,
                             company: _company,
                             created: DateTime.now());
                         // widget.parentAction(newItem);
-                        itemListBloc.addItemToList(newItem);
+                        // itemListBloc.addItemToList(newItem);
+                        itemsProvider.addItem(newItem);
+                        _sendAnalyticsEvent(newItem);
                         Navigator.pop(context, newItem);
                       }
                     },
@@ -164,5 +175,10 @@ class _AddItemDialogState extends State<AddItemDialog> {
             ),
           )),
     );
+  }
+
+  Future<void> _sendAnalyticsEvent(CustomListItemObject item) async {
+    var itemEventMap = {"ID": item.id.toString()};
+    await widget.analytics.logEvent(name: "AddItem", parameters: itemEventMap);
   }
 }

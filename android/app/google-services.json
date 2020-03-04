@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "375316456680",
+    "firebase_url": "https://einkaufszettel-85cc1.firebaseio.com",
+    "project_id": "einkaufszettel-85cc1",
+    "storage_bucket": "einkaufszettel-85cc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375316456680:android:95f1df1b5d6cec6f66155d",
+        "android_client_info": {
+          "package_name": "com.example.einkaufszettel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375316456680-fsm1fepgh1gtocdjq351d4hb6u1tfn8m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJsF7zhR7z_-DjiP2SMjXdRle-c7DvF4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375316456680-fsm1fepgh1gtocdjq351d4hb6u1tfn8m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

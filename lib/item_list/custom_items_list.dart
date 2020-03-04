@@ -1,8 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:einkaufszettel/_models/CRUDModel.dart';
 import 'package:einkaufszettel/_models/CustomListItemObject.dart';
 import 'package:einkaufszettel/item_list/add_cartitem_button.dart';
 import 'package:einkaufszettel/item_list/bloc/item_list_bloc.dart';
+import 'package:einkaufszettel/item_list/bloc/item_list_provider.dart';
 import 'package:einkaufszettel/item_list/list_item.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // class CustomItemsList extends StatefulWidget {
 //   final ValueChanged<CustomListItemObject> parentAction;
@@ -53,17 +59,36 @@ import 'package:flutter/material.dart';
 // }
 
 class CustomItemsList extends StatelessWidget {
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
+  const CustomItemsList({Key key, this.analytics, this.observer})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
+    List<CustomListItemObject> items;
+    final itemsProvider = Provider.of<CRUDModel>(context);
     return Scaffold(
-      body: StreamBuilder<List<CustomListItemObject>>(
-          stream: itemListBloc.getList,
-          initialData: itemListBloc.provider.currentList,
-          builder: (BuildContext context,
-              AsyncSnapshot<List<CustomListItemObject>> snapshot) {
-            return _getListView(snapshot.data);
+      body: StreamBuilder<QuerySnapshot>(
+          stream: itemsProvider.fetchItemsAsStream(),
+          // initialData: itemListBloc.provider.currentList,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasData) {
+              items = snapshot.data.documents
+                  .map((doc) =>
+                      CustomListItemObject.fromMap(doc.data, doc.documentID))
+                  .toList();
+              return _getListView(items);
+            } else {
+              return Text("Hi");
+            }
+            // return _getListView(snapshot.data);
           }),
-      floatingActionButton: AddCartItemButton(),
+      floatingActionButton: AddCartItemButton(
+        analytics: analytics,
+        observer: observer,
+      ),
       backgroundColor: Colors.green.shade600,
     );
   }

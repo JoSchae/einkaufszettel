@@ -1,9 +1,17 @@
 import 'package:einkaufszettel/_models/CustomListItemObject.dart';
 import 'package:einkaufszettel/appbar/customAppBar.dart';
 import 'package:einkaufszettel/item_list/custom_items_list.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatelessWidget {
+
+  final FirebaseAnalytics analytics;
+  final FirebaseAnalyticsObserver observer;
+
+  const MainPage({Key key, this.analytics, this.observer}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +30,10 @@ class MainPage extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(child: CustomItemsList())
+          Expanded(child: CustomItemsList(
+            analytics: analytics,
+            observer: observer
+          ))
         ],
       ),
       backgroundColor: Colors.green.shade600,
