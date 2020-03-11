@@ -27,7 +27,7 @@ class AddCartItemButton extends StatelessWidget {
           Icons.add,
           size: 50.0,
         ),
-        backgroundColor: Colors.green.shade400,
+        backgroundColor: Colors.green.shade500,
       );
   }
 }

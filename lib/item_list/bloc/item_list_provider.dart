@@ -35,11 +35,11 @@ class ItemListProvider {
     //     id: new UniqueKey(), name: "test", amount: 1, created: DateTime.now())
   ];
 
-  void addToCurrentList(CustomListItemObject item) {
-    currentList.add(item);
-  }
+  // void addToCurrentList(CustomListItemObject item) {
+  //   currentList.add(item);
+  // }
 
-  void removeFromCurrentList(UniqueKey id) {
-    currentList.removeWhere((item) => item.id == id);
-  }
+  // void removeFromCurrentList(UniqueKey id) {
+  //   currentList.removeWhere((item) => item.id == id);
+  // }
 }

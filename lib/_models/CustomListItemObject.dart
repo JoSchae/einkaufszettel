@@ -1,28 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CustomListItemObject {
-  final String id;
+  String id;
   final String name;
   final int amount;
   String company;
-  final DateTime created;
-  DateTime bought;
+  final Timestamp created;
+  Timestamp bought;
 
-  CustomListItemObject(
-      {@required this.id,
-      @required this.name,
-      @required this.amount,
-      this.company,
-      @required this.created,
-      this.bought});
+  // CustomListItemObject(
+  //     {this.id,
+  //     @required this.name,
+  //     @required this.amount,
+  //     this.company,
+  //     this.created,
+  //     this.bought});
 
-  CustomListItemObject.fromMap(Map snapshot, String id)
+  CustomListItemObject.fromMap(Map snapshot, [String id])
       : id = id ?? '',
-        name = snapshot[''] ?? '',
-        amount = snapshot[''] ?? 1,
-        company = snapshot[''] ?? '',
-        created = snapshot[''] ?? DateTime.now(),
-        bought = snapshot[''] ?? null;
+        name = snapshot['name'] ?? '',
+        amount = snapshot['amount'] ?? 1,
+        company = snapshot['company'] ?? '',
+        created = snapshot['created'] ?? Timestamp.now(),
+        bought = snapshot['bought'] ?? null;
 
   toJson() {
     return {

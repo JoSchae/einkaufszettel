@@ -60,22 +60,20 @@ import 'package:einkaufszettel/_models/CRUDModel.dart';
 //   }
 // }
 
-class AddItemDialog extends StatefulWidget {
-  final FirebaseAnalytics analytics;
-  final FirebaseAnalyticsObserver observer;
+class EditItemDialog extends StatefulWidget {
+  final CustomListItemObject item;
 
-  const AddItemDialog({Key key, this.analytics, this.observer})
-      : super(key: key);
+  const EditItemDialog({Key key, this.item}) : super(key: key);
 
   @override
-  _AddItemDialogState createState() => _AddItemDialogState();
+  _EditItemDialogState createState() => _EditItemDialogState();
 }
 
-class _AddItemDialogState extends State<AddItemDialog> {
+class _EditItemDialogState extends State<EditItemDialog> {
   final _formKey = GlobalKey<FormState>();
   String _productName;
-  int _amount = 1;
-  String _company = "";
+  int _amount;
+  String _company;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +93,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     // mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
-                      Text("Add Item",
+                      Text("Edit Item",
                           style: TextStyle(
                               fontSize: 20.0, fontWeight: FontWeight.bold)),
                       Container(
@@ -111,8 +109,9 @@ class _AddItemDialogState extends State<AddItemDialog> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: widget.item.name,
                     decoration: InputDecoration(labelText: "Product Name"),
-                    // autofocus: true,
+                    autofocus: true,
                     validator: (value) {
                       if (value.isEmpty) {
                         return "Please enter some product name";
@@ -126,12 +125,20 @@ class _AddItemDialogState extends State<AddItemDialog> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     maxLength: 3,
-                    initialValue: this._amount.toString(),
+                    initialValue: widget.item.amount.toString(),
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: "Amount",
                     ),
                     onChanged: (value) {
+                      print("amount: " + int.parse(value).toString());
+                      if (value.isNotEmpty) {
+                        this._amount = int.parse(value);
+                      } else {
+                        this._amount = 1;
+                      }
+                    },
+                    onFieldSubmitted: (value) {
                       if (value.isNotEmpty) {
                         this._amount = int.parse(value);
                       } else {
@@ -146,6 +153,7 @@ class _AddItemDialogState extends State<AddItemDialog> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
+                    initialValue: widget.item.company,
                     decoration: InputDecoration(labelText: "Company Name"),
                     onChanged: (value) {
                       this._company = value;
@@ -157,17 +165,16 @@ class _AddItemDialogState extends State<AddItemDialog> {
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        var newItem = CustomListItemObject.fromMap(
-                            {
-                            "name": _productName,
-                            "amount": _amount,
-                            "company": _company,
-                            "created": Timestamp.now()
-                            }, "to be generated automatically");
+                        var newItem = new CustomListItemObject.fromMap({
+                          "name": _productName,
+                          "amount": _amount,
+                          "company": _company,
+                          "created": widget.item.created
+                        }, widget.item.id);
                         // widget.parentAction(newItem);
                         // itemListBloc.addItemToList(newItem);
-                        itemsProvider.addItem(newItem);
-                        _sendAnalyticsEvent(newItem);
+                        print(newItem.toJson());
+                        itemsProvider.updateItem(newItem.toJson(), newItem.id);
                         Navigator.pop(context, newItem);
                       }
                     },
@@ -178,10 +185,5 @@ class _AddItemDialogState extends State<AddItemDialog> {
             ),
           )),
     );
-  }
-
-  Future<void> _sendAnalyticsEvent(CustomListItemObject item) async {
-    // var itemEventMap = {"ID": item.id.toString()};
-    await widget.analytics.logEvent(name: "AddItem");
   }
 }

@@ -75,13 +75,13 @@ class CustomItemsList extends StatelessWidget {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasData) {
-              items = snapshot.data.documents
-                  .map((doc) =>
-                      CustomListItemObject.fromMap(doc.data, doc.documentID))
-                  .toList();
+              items = snapshot.data.documents.map((doc) {
+                return CustomListItemObject.fromMap(doc.data, doc.documentID);
+              }).toList();
+              items.removeWhere((item) => item.bought != null);
               return _getListView(items);
             } else {
-              return Text("Hi");
+              return Text("Something doesn't work correctly");
             }
             // return _getListView(snapshot.data);
           }),
@@ -89,7 +89,7 @@ class CustomItemsList extends StatelessWidget {
         analytics: analytics,
         observer: observer,
       ),
-      backgroundColor: Colors.green.shade600,
+      backgroundColor: Colors.grey.shade200,
     );
   }
 

@@ -5,6 +5,6 @@ import 'package:get_it/get_it.dart';
 GetIt locator = GetIt();
 
 void setupLocator() {
-  locator.registerLazySingleton(() => Api('custom_list_item_objects'));
+  locator.registerLazySingleton(() => Api('zettel_items'));
   locator.registerLazySingleton(() => CRUDModel());
 }

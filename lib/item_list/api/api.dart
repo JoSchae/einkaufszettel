@@ -11,7 +11,7 @@ class Api {
 
   Future<QuerySnapshot> getDataCollection() => ref.getDocuments();
 
-  Stream<QuerySnapshot> streamDataCollection() => ref.snapshots();
+  Stream<QuerySnapshot> streamDataCollection() => ref.orderBy("created").snapshots();
 
   Future<DocumentSnapshot> getDocumentById(String id) => ref.document(id).get();
 

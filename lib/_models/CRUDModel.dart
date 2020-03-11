@@ -2,10 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:einkaufszettel/_models/CustomListItemObject.dart';
 import 'package:einkaufszettel/item_list/api/api.dart';
 import 'package:einkaufszettel/locator.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 
 class CRUDModel extends ChangeNotifier {
   Api _api = locator<Api>();
+
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  // static FirebaseAnalyticsObserver observer =
+  //     FirebaseAnalyticsObserver(analytics: analytics);
 
   List<CustomListItemObject> items;
 
@@ -18,6 +24,7 @@ class CRUDModel extends ChangeNotifier {
   }
 
   Stream<QuerySnapshot> fetchItemsAsStream() {
+    analytics.logEvent(name: "fetchItemsAsStream");
     return _api.streamDataCollection();
   }
 
@@ -28,6 +35,18 @@ class CRUDModel extends ChangeNotifier {
 
   Future removeItem(String id) async {
     await _api.removeDocument(id);
+    return;
+  }
+
+  Future resolveItem(CustomListItemObject item) async {
+    var newItem = new CustomListItemObject.fromMap({
+      "name": item.name,
+      "amount": item.amount,
+      "company": item.company,
+      "created": item.created,
+      "bought": Timestamp.now()
+    }, item.id);
+    await _api.updateDocument(newItem.toJson(), newItem.id);
     return;
   }
 

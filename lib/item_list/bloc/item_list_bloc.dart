@@ -12,23 +12,23 @@ class ItemListBloc {
 
   Stream<List<CustomListItemObject>> get getList => itemListController.stream;
 
-  removeItemFromList(UniqueKey id) {
-    analytics.logEvent(name: "removeItem");
-    provider.removeFromCurrentList(id);
-    itemListController.sink.add(provider.currentList);
-  }
+  // removeItemFromList(UniqueKey id) {
+  //   analytics.logEvent(name: "removeItem");
+  //   provider.removeFromCurrentList(id);
+  //   itemListController.sink.add(provider.currentList);
+  // }
 
-  resolveItemAsBought(UniqueKey id) {
-    analytics.logEvent(name: "resolveItem");
-    provider.removeFromCurrentList(id);
-    itemListController.sink.add(provider.currentList);
-  }
+  // resolveItemAsBought(UniqueKey id) {
+  //   analytics.logEvent(name: "resolveItem");
+  //   provider.removeFromCurrentList(id);
+  //   itemListController.sink.add(provider.currentList);
+  // }
 
-  addItemToList(CustomListItemObject item) {
-    analytics.logEvent(name: "addItem");
-    provider.addToCurrentList(item);
-    itemListController.sink.add(provider.currentList);
-  }
+  // addItemToList(CustomListItemObject item) {
+  //   analytics.logEvent(name: "addItem");
+  //   provider.addToCurrentList(item);
+  //   itemListController.sink.add(provider.currentList);
+  // }
 
   void dispose() {
     itemListController.close();

@@ -10,7 +10,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           IconButton(icon: Icon(Icons.shopping_cart), onPressed: () => {}),
           IconButton(icon: Icon(Icons.add_shopping_cart), onPressed: () => {}),
         ],
-        backgroundColor: Colors.green.shade400,
+        backgroundColor: Colors.green.shade600,
       );
 
   @override

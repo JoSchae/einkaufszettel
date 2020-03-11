@@ -25,7 +25,7 @@ class MainPage extends StatelessWidget {
                 Text(
                   "Zettel Name",
                   style:
-                      TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -36,7 +36,7 @@ class MainPage extends StatelessWidget {
           ))
         ],
       ),
-      backgroundColor: Colors.green.shade600,
+      backgroundColor: Colors.grey.shade200,
     );
   }
 }
